@@ -3,12 +3,15 @@ const city = document.getElementById("city");
 const search = document.getElementById("input");
 
 document.getElementById("set").addEventListener("submit", () => {
+	console.log('event')
 	chrome.runtime.sendMessage({ data: search.value });
+	console.log(chrome.runtime.lastError)
 });
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 	console.log(request.data);
-	city.textContent = request.data;
+	if (request.data.error) return city.textContent = request.data.error;
+	city.textContent = 'Your city: ' + request.data.city;
 });
 
 document.addEventListener("DOMContentLoaded", function(event) {
