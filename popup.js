@@ -2,7 +2,6 @@
 const city = document.getElementById("city");
 const search = document.getElementById("input");
 
-
 document.getElementById("set").addEventListener("submit", () => {
 	chrome.runtime.sendMessage({ data: search.value });
 });
