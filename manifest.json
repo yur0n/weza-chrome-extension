@@ -1,10 +1,10 @@
 {
 	"manifest_version": 3,
-	"name": "My Extension",
+	"name": "Weza",
 	"version": "1.0",
 	"description": "A simple extension",
 	"permissions": [
-		"tabs", 
+		"background",
 		"storage",
 		"alarms"
 	],

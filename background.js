@@ -1,14 +1,15 @@
 
-chrome.runtime.onStartup.addListener(async () => {
-	const cityCheck = await chrome.storage.local.get(["currentCity"])
-	if (cityCheck) setWeather(cityCheck.currentCity)
-	createAlarm()
+chrome.runtime.onStartup.addListener(() => {
+	const cityCheck = chrome.storage.local.get(['currentCity']);
+	if (cityCheck) {
+		setWeather(cityCheck.currentCity);
+		createAlarm();
+	}
 });
 
-chrome.runtime.onMessage.addListener(async function(request, sender, sendResponse) {
-	console.log('event2')
-	let result = await setWeather(request.data)
-	chrome.runtime.sendMessage({ data: result })
+chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
+	let result = await setWeather(request.data);
+	chrome.runtime.sendMessage({ data: result });
 	createAlarm();
 });
 
@@ -19,26 +20,24 @@ function createAlarm() {
 	);
 }
 
-chrome.alarms.onAlarm.addListener(async () => {
-	const cityCheck = await chrome.storage.local.get(["currentCity"])
+chrome.alarms.onAlarm.addListener(() => {
+	const cityCheck = chrome.storage.local.get(['currentCity']);
 	setWeather(cityCheck.currentCity);
 })
 
 
 async function setWeather(address) {
-	const data = await getWeather(address)
-	console.log(data)
+	const data = await getWeather(address);
 	if (data.error) {
 		chrome.action.setBadgeText({ text: 'X' });
-		return data
+	} else {
+		chrome.action.setBadgeText({ text: Math.round(data.temp) + '°C' });
+		chrome.storage.local.set({ currentCity: data.city });
 	}
-	chrome.action.setBadgeText({ text: Math.round(data.temp) + '°C' });
-	chrome.storage.local.set({ currentCity: data.city });
 	return data;
 }
 
 function getWeather(address) {
-	console.log('here')
 	return fetch(`http://34.238.67.183/weather?address=${address}`)
 	.then(res => res.json())
 	.then(res => {
@@ -59,7 +58,7 @@ function getWeather(address) {
 // Older version without my server api
 
 // chrome.runtime.onStartup.addListener(async () => {
-// 	const cityCheck = await chrome.storage.local.get(["currentCity"])
+// 	const cityCheck = await chrome.storage.local.get(['currentCity'])
 // 	if (cityCheck) setWeather(cityCheck.currentCity)
 // });
 
