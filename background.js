@@ -30,23 +30,29 @@ async function setWeather(address) {
 	const data = await getWeather(address);
 	if (data.error) {
 		chrome.action.setBadgeText({ text: 'X' });
+		chrome.storage.local.set({ currentCity: data.error });
 	} else {
-		chrome.action.setBadgeText({ text: Math.round(data.temp) + '°C' });
+		const iconLink = `https://openweathermap.org/img/wn/${data.icon}.png`;
 		chrome.storage.local.set({ currentCity: data.city });
+		chrome.storage.local.set({ main: data.main });
+		chrome.action.setBadgeText({ text: Math.round(data.temp) + '°C' });
+		chrome.action.setIcon({ path: iconLink });
 	}
 	return data;
 }
 
 function getWeather(address) {
-	return fetch(`http://34.238.67.183/weather?address=${address}`)
+	return fetch(`http://notsite.mooo.com/weather?address=${address}`)
 	.then(res => res.json())
 	.then(res => {
     	if (res.error) return { error: res.error };
 		return { 
 			temp: res.temp,
-			city: res.location
-		 };
-    })
+			city: res.location,
+			icon: res.icon,
+			main: res.main
+		};
+	})
 	.catch((e) => {
 		console.log(e)
 		return { error: 'Unable to connect to server' };

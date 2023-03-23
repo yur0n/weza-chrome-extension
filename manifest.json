@@ -2,7 +2,10 @@
 	"manifest_version": 3,
 	"name": "Weza",
 	"version": "1.0",
-	"description": "A simple extension",
+	"description": "Extension",
+	"content_security_policy": {
+		"extension_pages": "script-src 'self'; object-src 'self'"
+	},
 	"permissions": [
 		"background",
 		"storage",
@@ -11,24 +14,18 @@
 	"background": {
 		"service_worker": "background.js"
 	},
-	"content_scripts": [
-		{
-			"matches": ["<all_urls>"],
-			"js": ["popup.js"]
-		}
-	],
 	"action": {
 		"default_icon": {
-      		"16": "icon.png",     
-      		"24": "icon.png",     
-      		"32": "icon.png"      
+      		"16": "icons/icon16.png",     
+      		"24": "icons/icon16.png",     
+      		"32": "icons/icon16.png"      
     	},
 		"default_popup": "popup.html"
 	},
 	"icons": {
-		"16": "icon.png",
-		"48": "icon.png",
-		"128": "icon.png"
+		"16": "icons/icon16.png",
+		"48": "icons/icon48.png",
+		"128": "icons/icon128.png"
 	},
 	"host_permissions": [
 		"https://*/*",
