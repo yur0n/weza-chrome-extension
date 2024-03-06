@@ -9,6 +9,7 @@ chrome.runtime.onInstalled.addListener(async ({ reason }) => {
 });
 
 chrome.runtime.onMessage.addListener(async function(request, sender, sendResponse) {
+	le
 	let result = await setWeather(request.data)
 	chrome.runtime.sendMessage({ data: result })
 	await chrome.alarms.create('alarm', {
@@ -19,7 +20,7 @@ chrome.runtime.onMessage.addListener(async function(request, sender, sendRespons
 chrome.alarms.onAlarm.addListener(() => {
 	console.log('check weatehr')
 	const cityCheck = chrome.storage.local.get(['currentCity']);
-	setWeather(cityCheck.currentCity || 'New-York');
+	setWeather(cityCheck.currentCity || 'New York');
 })
 
 
