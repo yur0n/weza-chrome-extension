@@ -4,14 +4,22 @@ chrome.runtime.onInstalled.addListener(async ({ reason }) => {
 	}
 
 	await chrome.alarms.create('alarm', {
-	  periodInMinutes: 0.5
+	  periodInMinutes: 0.2
 	});
 });
 
+chrome.runtime.onMessage.addListener(async function(request, sender, sendResponse) {
+	let result = await setWeather(request.data)
+	chrome.runtime.sendMessage({ data: result })
+	await chrome.alarms.create('alarm', {
+	  periodInMinutes: 0.2
+	});
+})
 
 chrome.alarms.onAlarm.addListener(() => {
+	console.log('check weatehr')
 	const cityCheck = chrome.storage.local.get(['currentCity']);
-	setWeather(cityCheck.currentCity);
+	setWeather(cityCheck.currentCity || 'New-York');
 })
 
 
