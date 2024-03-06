@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', checkState);
 function checkState() {
 	console.log('checkdom')
 	chrome.storage.local.get(['currentCity'], (result) => {
-		if (typeof result.currentCity === 'string') setCity.textContent = 'Your city: ' + result.currentCity;
+		setCity.textContent = 'Your city: ' + result.currentCity;
 	});
 	checkMain()
 }
