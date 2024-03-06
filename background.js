@@ -17,7 +17,7 @@ chrome.runtime.onMessage.addListener(async function(request, sender, sendRespons
 	});
 })
 
-chrome.alarms.onAlarm.addListener(() => {
+chrome.alarms.onAlarm.addListener(async() => {
 	const cityCheck = await chrome.storage.local.get(['currentCity']);
 	console.log('check weathe for ' + cityCheck.currentCity)
 	setWeather(cityCheck.currentCity || 'New York');
@@ -28,11 +28,11 @@ async function setWeather(address) {
 	const data = await getWeather(address);
 	if (data.error) {
 		chrome.action.setBadgeText({ text: 'X' });
-		chrome.storage.local.set({ currentCity: data.error });
+		await chrome.storage.local.set({ currentCity: data.error });
 	} else {
 		const iconLink = `https://openweathermap.org/img/wn/${data.icon}.png`;
-		chrome.storage.local.set({ currentCity: data.city });
-		chrome.storage.local.set({ main: data.main });
+		await chrome.storage.local.set({ currentCity: data.city });
+		await chrome.storage.local.set({ main: data.main });
 		chrome.action.setBadgeText({ text: Math.round(data.temp) + '°C' });
 		chrome.action.setIcon({ path: iconLink });
 	}
