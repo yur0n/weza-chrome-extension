@@ -6,7 +6,7 @@ const bodyBackground = document.body
 
 setForm.addEventListener('submit', () => {
 	if (search.value.length < 1) return;
-	chrome.storage.local.set({ 'currentCity': search.value }).then(() => {
+	chrome.storage.local.set({ currentCity: search.value }).then(() => {
     		console.log("City is set");
   	});
 	chrome.runtime.sendMessage({ data: search.value });
