@@ -6,9 +6,7 @@ const bodyBackground = document.body
 
 setForm.addEventListener('submit', async () => {
 	if (search.value.length < 1) return;
-	await chrome.storage.local.set({ currentCity: search.value }).then(() => {
-    		console.log("City is set");
-  	});
+	await chrome.storage.local.set({ currentCity: search.value });
 	chrome.runtime.sendMessage({ data: search.value });
 });
 
@@ -21,10 +19,9 @@ document.addEventListener('DOMContentLoaded', checkState);
 
 async function checkState() {
 	console.log('checkdom')
-	await chrome.storage.local.get(['currentCity'], (result) => {
-		setCity.textContent = 'Your city: ' + result.currentCity;
-	});
-	await checkMain()
+	let result = await chrome.storage.local.get(['currentCity']);
+	setCity.textContent = 'Your city: ' + result.currentCity;
+	checkMain()
 }
 
 function checkMain() {
