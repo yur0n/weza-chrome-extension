@@ -34,7 +34,7 @@ async function setWeather(address) {
 }
 
 async function getWeather(address) {
-	return fetch(`https://yuron.xyz/api/weather?address=${address}`)
+	return fetch(`https://yuron.dev/api/weather?address=${address}`)
 	.then(res => res.json())
 	.then(res => {
 		if (res.error) return { error: res.error };
